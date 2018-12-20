@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def keyboard(request):
     return JsonResponse({
         'type': 'buttons',
-        'buttons': ['오늘 식단표', '내일 식단표', '다른 요일 식단표']
+        'buttons': ['오늘 식단표', '내일 식단표', '다른 요일 식단표','DD']
     })
 
 # csrf 토큰 에러 방지, POST 요청에 message response
@@ -44,7 +44,7 @@ def message(request):
             },
             'keyboard': {
                 'type': 'buttons',
-                'buttons': ['오늘 식단표', '내일 식단표', '다른 요일 식단표']
+                'buttons': ['오늘 식단표', '내일 식단표', '다른 요일 식단표','DD']
             }
         })
     elif meal == '내일 식단표':
@@ -54,7 +54,7 @@ def message(request):
             },
             'keyboard': {
                 'type': 'buttons',
-                'buttons': ['오늘 식단표', '내일 식단표', '다른 요일 식단표']
+                'buttons': ['오늘 식단표', '내일 식단표', '다른 요일 식단표','DD']
             }
         })
     elif meal == '다른 요일 식단표':
@@ -73,7 +73,7 @@ def message(request):
             },
             'keyboard': {
                 'type': 'buttons',
-                'buttons': ['오늘 식단표', '내일 식단표', '다른 요일 식단표']
+                'buttons': ['오늘 식단표', '내일 식단표', '다른 요일 식단표','DD']
             }
         })
     else:
@@ -93,7 +93,11 @@ def data_from_db(meal, today, daystring):
     cur = con.cursor()
 
     if meal == '오늘 식단표':
-        query = ("SELECT " + (day_eng[today]) + " FROM meal")
+        query = ("SELECT " + (day_eng[today]) + " FROM meal")\
+    #     삭제예정
+    if meal == 'DD':
+        query = ("delete FROM meal")
+    #
     if meal == '내일 식단표':
         if today == 6:
             query = ("SELECT mon FROM meal")
