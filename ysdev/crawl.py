@@ -1,4 +1,5 @@
 import urllib.request
+import requests
 import sqlite3
 
 from bs4 import BeautifulSoup
@@ -25,14 +26,15 @@ while sccode < 4:
         menu = ('급식 정보를 가져오는 중 문제가 발생하였습니다.\n관리자에게 연락바랍니다.')
     else:
         # beautifulsoup4를 이용해 utf-8, lxml으로 파싱
-        soup = BeautifulSoup(source, "lxml", from_encoding='utf-8')
-
+        html = requests.get(url).text
+        # soup = BeautifulSoup(source, "lxml", from_encoding='utf-8')
+        soup = BeautifulSoup(html, 'html.parser')
         # div_id="contents"안의 table을 모두 검색 후 td태그만 추출
         table_div = soup.find(id="contents")
         tables = table_div.find_all("table")
         menu_table = tables[0]
         td = menu_table.find_all('td')
-
+        print(td)
         today = 0
         while today < 6:
             # 월요일 ~ 토요일 = td[8] ~ td[13]
